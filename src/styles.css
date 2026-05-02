@@ -21,9 +21,13 @@ body {
 }
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 16px;
+}
+
+.header h1 {
+  margin: 0;
 }
 .card {
   background: var(--card);
@@ -94,10 +98,10 @@ body {
   font-size: 18px;
 }
 .hamburger.left {
-  position: absolute;
+  position: fixed;
   left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 12px;
+  z-index: 50;
 }
 .left-drawer {
   position: fixed;
