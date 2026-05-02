@@ -14,9 +14,10 @@ body {
   color: #111;
 }
 .container {
-  max-width: 960px;
-  margin: 28px auto;
-  padding: 20px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 20px;
 }
 .header {
   display: flex;
@@ -64,8 +65,61 @@ body {
 }
 .two-col {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.two-col.editing {
+  grid-template-columns: 320px 1fr;
+  max-width: 100%;
+}
+
+.bug-list-col {
+  grid-column: 1;
+}
+
+/* Drawer and hamburger */
+.hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: var(--card);
+  cursor: pointer;
+  font-size: 18px;
+}
+.hamburger.left {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.left-drawer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 320px;
+  max-width: 85vw;
+  background: var(--card);
+  box-shadow: 2px 0 8px rgba(2, 6, 23, 0.06);
+  transform: translateX(-100%);
+  transition: transform 240ms ease;
+  padding: 16px;
+  z-index: 40;
+  overflow: auto;
+}
+.left-drawer.open {
+  transform: translateX(0);
+}
+
+.container {
+  position: relative;
 }
 textarea {
   width: 100%;
