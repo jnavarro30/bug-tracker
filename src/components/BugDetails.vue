@@ -20,7 +20,7 @@
       <div v-if="bug.attachments.length === 0" class="muted">
         No attachments
       </div>
-      <ul class="list-none">
+      <ul>
         <li v-for="a in bug.attachments" :key="a.id" class="attachment">
           {{ a.name }}
         </li>
