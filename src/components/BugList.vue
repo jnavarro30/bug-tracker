@@ -6,7 +6,7 @@
 
     <div class="two-col" :class="{ editing: editing }">
       <div v-if="editing">
-        <div style="margin-top: 12px" class="card">
+        <div class="mt-3 card">
           <BugForm
             :modelValue="editing"
             @save="saveEdit"
@@ -19,7 +19,7 @@
         <div class="card">
           <div class="small muted">{{ bugs.length }} items</div>
         </div>
-        <div style="margin-top: 12px" class="card">
+        <div class="mt-3 card">
           <div
             v-for="bug in bugs"
             :key="bug.id"
@@ -41,7 +41,7 @@
           </div>
         </div>
 
-        <div style="margin-top: 12px">
+        <div class="mt-3">
           <div v-if="selected">
             <BugDetails
               :bug="selected"
@@ -52,7 +52,7 @@
               @add-attachment="onAddAttachment"
             />
           </div>
-          <div v-else class="card" style="margin-top: 8px">
+          <div v-else class="card mt-2">
             <div class="muted">Select a bug to view details.</div>
           </div>
         </div>

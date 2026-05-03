@@ -4,30 +4,28 @@
     <div class="small muted">
       Type: {{ bug.type }} • Severity: {{ bug.severity }}
     </div>
-    <div style="margin-top: 8px">{{ bug.description || "No description" }}</div>
+    <div class="mt-2">{{ bug.description || "No description" }}</div>
 
-    <div style="margin-top: 12px">
+    <div class="mt-3">
       <strong>Assignee:</strong>
       <span class="muted">{{ bug.assignee || "Unassigned" }}</span>
     </div>
-    <div style="margin-top: 8px">
+    <div class="mt-2">
       <strong>Reporter:</strong>
       <span class="muted">{{ bug.reporter || "Unknown" }}</span>
     </div>
 
-    <div style="margin-top: 12px">
+    <div class="mt-3">
       <strong>Attachments</strong>
       <div v-if="bug.attachments.length === 0" class="muted">
         No attachments
       </div>
-      <ul>
+      <ul class="list-none">
         <li v-for="a in bug.attachments" :key="a.id" class="attachment">
           {{ a.name }}
         </li>
       </ul>
-      <div
-        style="display: flex; gap: 8px; margin-top: 8px; align-items: center"
-      >
+      <div class="flex gap-2 mt-2 items-center">
         <input v-model="attachmentName" placeholder="Attachment name" />
         <button class="btn" @click="addAttachment">Add</button>
       </div>
@@ -45,16 +43,14 @@
         </div>
         <div>{{ c.text }}</div>
       </div>
-      <div
-        style="display: flex; gap: 8px; margin-top: 8px; align-items: center"
-      >
+      <div class="flex gap-2 mt-2 items-center">
         <input v-model="commentAuthor" placeholder="Your name" />
         <input v-model="commentText" placeholder="Add a comment" />
         <button class="btn" @click="addComment">Comment</button>
       </div>
     </div>
 
-    <div style="display: flex; gap: 8px; margin-top: 12px">
+    <div class="flex gap-2 mt-3">
       <button class="btn secondary" @click="$emit('close')">Close</button>
       <button class="btn" @click="$emit('edit', bug)">Edit</button>
       <button class="btn" @click="$emit('delete', bug.id)">Delete</button>

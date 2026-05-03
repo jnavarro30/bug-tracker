@@ -1,7 +1,9 @@
 <template>
   <div class="card">
-    <h3>{{ edit ? "Edit Bug" : "New Bug" }}</h3>
-    <div style="display: flex; gap: 8px; margin-top: 8px">
+    <h3 class="p-5 text-center">
+      {{ edit ? "Edit Bug" : "New Bug" }}
+    </h3>
+    <div class="flex gap-2 mt-2">
       <select v-model="form.type">
         <option>Bug</option>
         <option>Task</option>
@@ -14,17 +16,17 @@
         <option>Critical</option>
       </select>
     </div>
-    <div style="margin-top: 8px">
+    <div class="mt-2">
       <input v-model="form.summary" placeholder="Summary" />
     </div>
-    <div style="margin-top: 8px">
+    <div class="mt-2">
       <textarea v-model="form.description" placeholder="Description"></textarea>
     </div>
-    <div style="display: flex; gap: 8px; margin-top: 8px; align-items: center">
+    <div class="flex flex-col gap-2 mt-2">
       <input v-model="form.assignee" placeholder="Assignee" />
       <input v-model="form.reporter" placeholder="Reporter" />
     </div>
-    <div style="display: flex; gap: 8px; margin-top: 12px">
+    <div class="flex gap-2 mt-3">
       <button class="btn" @click="submit">{{ edit ? "Save" : "Add" }}</button>
       <button class="btn secondary" @click="$emit('cancel')">Cancel</button>
     </div>

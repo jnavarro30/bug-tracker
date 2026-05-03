@@ -6,7 +6,7 @@
       @click="showDrawer = !showDrawer"
       title="Toggle new bug"
     >
-      &#9776;
+      <img src="./assets/bug.svg" alt="bug" width="20" height="20" />
     </button>
     <div class="header">
       <h1>Simple Bug Tracker</h1>
@@ -14,7 +14,7 @@
 
     <div>
       <div class="left-drawer" :class="{ open: showDrawer }">
-        <div style="padding: 12px">
+        <div class="p-3">
           <BugForm @save="create" @cancel="showDrawer = false" />
         </div>
       </div>
