@@ -40,23 +40,22 @@
             </div>
           </div>
         </div>
-
-        <div class="mt-3">
-          <div v-if="selected">
-            <BugDetails
-              :bug="selected"
-              @close="selected = null"
-              @edit="startEdit"
-              @delete="del"
-              @add-comment="onAddComment"
-              @add-attachment="onAddAttachment"
-            />
-          </div>
-          <div v-else class="card mt-2">
-            <div class="muted">Select a bug to view details.</div>
-          </div>
-        </div>
       </div>
+    </div>
+
+    <!-- Modal Backdrop -->
+    <div v-if="selected" class="modal-backdrop" @click="selected = null"></div>
+
+    <!-- Modal -->
+    <div v-if="selected" class="modal">
+      <BugDetails
+        :bug="selected"
+        @close="selected = null"
+        @edit="startEdit"
+        @delete="del"
+        @add-comment="onAddComment"
+        @add-attachment="onAddAttachment"
+      />
     </div>
   </div>
 </template>

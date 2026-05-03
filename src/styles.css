@@ -294,3 +294,26 @@ textarea {
 .hamburger.left:hover {
   background-color: #f9fafb;
 }
+
+/* Modal styles */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 50;
+}
+
+.modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 60;
+  max-width: 90vw;
+  width: 720px;
+  background: transparent;
+}
+
+.modal .card {
+  padding: 1rem;
+}

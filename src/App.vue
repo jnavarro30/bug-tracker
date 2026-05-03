@@ -6,7 +6,20 @@
       @click="showDrawer = !showDrawer"
       title="Toggle new bug"
     >
-      <img src="./assets/bug.svg" alt="bug" width="20" height="20" />
+      <img
+        v-if="!showDrawer"
+        src="./assets/bug-open.svg"
+        alt="bug"
+        width="20"
+        height="20"
+      />
+      <img
+        v-else
+        src="./assets/bug-close.svg"
+        alt="bug"
+        width="20"
+        height="20"
+      />
     </button>
     <div class="header">
       <h1>Simple Bug Tracker</h1>
