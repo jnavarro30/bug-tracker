@@ -1,18 +1,52 @@
 <template>
   <div class="card">
-    <h3>{{ bug.summary }}</h3>
-    <div class="small muted">
-      Type: {{ bug.type }} • Severity: {{ bug.severity }}
-    </div>
-    <div class="mt-2">{{ bug.description || "No description" }}</div>
+    <div v-if="!isEditing">
+      <h3>{{ bug.summary }}</h3>
+      <div class="small muted">
+        Type: {{ bug.type }} • Severity: {{ bug.severity }}
+      </div>
+      <div class="mt-2">{{ bug.description || "No description" }}</div>
 
-    <div class="mt-3">
-      <strong>Assignee:</strong>
-      <span class="muted">{{ bug.assignee || "Unassigned" }}</span>
+      <div class="mt-3">
+        <strong>Assignee:</strong>
+        <span class="muted">{{ bug.assignee || "Unassigned" }}</span>
+      </div>
+      <div class="mt-2">
+        <strong>Reporter:</strong>
+        <span class="muted">{{ bug.reporter || "Unknown" }}</span>
+      </div>
     </div>
-    <div class="mt-2">
-      <strong>Reporter:</strong>
-      <span class="muted">{{ bug.reporter || "Unknown" }}</span>
+
+    <div v-else>
+      <h3>
+        <input v-model="editedBug.summary" placeholder="Summary" class="input" />
+      </h3>
+      <div class="small muted">
+        <select v-model="editedBug.type" class="input">
+          <option value="bug">Bug</option>
+          <option value="feature">Feature</option>
+          <option value="enhancement">Enhancement</option>
+        </select>
+        •
+        <select v-model="editedBug.severity" class="input">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="critical">Critical</option>
+        </select>
+      </div>
+      <div class="mt-2">
+        <textarea v-model="editedBug.description" placeholder="Description" class="input" rows="4" />
+      </div>
+
+      <div class="mt-3">
+        <strong>Assignee:</strong>
+        <input v-model="editedBug.assignee" placeholder="Assignee" class="input" />
+      </div>
+      <div class="mt-2">
+        <strong>Reporter:</strong>
+        <input v-model="editedBug.reporter" placeholder="Reporter" class="input" />
+      </div>
     </div>
 
     <div class="mt-3">
@@ -52,37 +86,57 @@
 
     <div class="flex gap-2 mt-3">
       <button class="btn secondary" @click="$emit('close')">Close</button>
-      <button class="btn" @click="$emit('edit', bug)">Edit</button>
+      <button class="btn" @click="startEdit">Edit</button>
       <button class="btn" @click="$emit('delete', bug.id)">Delete</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 const props = defineProps({ bug: { type: Object, required: true } });
-const emit = defineEmits(["close", "edit", "delete"]);
+const emit = defineEmits(["close", "save", "cancel", "delete", "add-comment", "add-attachment", "edit"]);
 
-const attachmentName = ref("");
+const isEditing = ref(false);
+const editedBug = ref({});
 const commentAuthor = ref("");
 const commentText = ref("");
+const attachmentName = ref("");
+
+// Initialize editedBug with the bug data when the component is mounted
+onMounted(() => {
+  editedBug.value = { ...props.bug };
+});
+
+function startEdit() {
+  isEditing.value = true;
+  editedBug.value = { ...props.bug };
+}
+
+function saveEdit() {
+  if (isEditing.value) {
+    emit('save', editedBug.value);
+    isEditing.value = false;
+  }
+}
+
+function cancelEdit() {
+  isEditing.value = false;
+  editedBug.value = { ...props.bug };
+}
+
+function addComment() {
+  if (!commentText.value) return;
+  emit('add-comment', {
+    author: commentAuthor.value || 'Anonymous',
+    text: commentText.value
+  });
+  commentText.value = '';
+}
 
 function addAttachment() {
   if (!attachmentName.value.trim()) return;
   emit("add-attachment", attachmentName.value.trim());
   attachmentName.value = "";
-}
-
-function addComment() {
-  if (!commentAuthor.value.trim() || !commentText.value.trim()) {
-    alert("Name and comment required");
-    return;
-  }
-  emit("add-comment", {
-    author: commentAuthor.value.trim(),
-    text: commentText.value.trim(),
-  });
-  commentAuthor.value = "";
-  commentText.value = "";
 }
 </script>

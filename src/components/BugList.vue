@@ -51,7 +51,8 @@
       <BugDetails
         :bug="selected"
         @close="selected = null"
-        @edit="startEdit"
+        @save="saveEdit"
+        @cancel="cancelEdit"
         @delete="del"
         @add-comment="onAddComment"
         @add-attachment="onAddAttachment"
@@ -89,7 +90,14 @@ function startEdit(b) {
 }
 
 function saveEdit(payload) {
-  updateBug(editing.value.id, payload);
+  if (editing.value) {
+    updateBug(editing.value.id, payload);
+    editing.value = null;
+    selected.value = { ...payload };
+  }
+}
+
+function cancelEdit() {
   editing.value = null;
 }
 
