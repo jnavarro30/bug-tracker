@@ -44,6 +44,9 @@
       </div>
     </div>
 
+    <!-- Toast -->
+    <div v-if="toast" class="toast">{{ toast }}</div>
+
     <!-- Modal Backdrop -->
     <div v-if="selected" class="modal-backdrop" @click="selected = null"></div>
 
@@ -76,6 +79,7 @@ const { showDrawer } = useDrawer();
 const selected = ref(null);
 const editing = ref(null);
 const search = ref("");
+const toast = ref("");
 
 const filteredBugs = computed(() => {
   const q = search.value.trim().toLowerCase();
@@ -107,7 +111,16 @@ function saveEdit(payload) {
     updateBug(editing.value.id, payload);
     editing.value = null;
     selected.value = { ...payload };
+  } else if (selected.value) {
+    updateBug(selected.value.id, payload);
+    selected.value = { ...selected.value, ...payload };
   }
+  showToast("Details saved successfully");
+}
+
+function showToast(msg) {
+  toast.value = msg;
+  setTimeout(() => (toast.value = ""), 3000);
 }
 
 function cancelEdit() {
@@ -130,3 +143,25 @@ function onAddAttachment(name) {
   addAttachment(selected.value.id, name);
 }
 </script>
+
+<style scoped>
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #323232;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  z-index: 1000;
+  pointer-events: none;
+  animation: fadein 0.2s ease;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+</style>
