@@ -28,7 +28,7 @@
     <div>
       <div class="left-drawer" :class="{ open: showDrawer }">
         <div class="p-3">
-          <BugForm @save="create" @cancel="showDrawer = false" />
+          <BugForm :key="showDrawer" @save="create" @cancel="showDrawer = false" />
         </div>
       </div>
 

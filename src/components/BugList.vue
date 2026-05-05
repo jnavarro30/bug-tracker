@@ -17,11 +17,12 @@
 
       <div class="bug-list-col">
         <div class="card">
-          <div class="small muted">{{ bugs.length }} items</div>
+          <input v-model="search" placeholder="Search items..." />
+          <div class="small muted mt-2">{{ filteredBugs.length }} items</div>
         </div>
         <div class="mt-3 card">
           <div
-            v-for="bug in bugs"
+            v-for="bug in filteredBugs"
             :key="bug.id"
             class="list-item"
             @click="select(bug)"
@@ -62,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import BugForm from "./BugForm.vue";
 import BugDetails from "./BugDetails.vue";
 import { useBugs } from "../composables/useBugs";
@@ -74,6 +75,18 @@ import { useDrawer } from "../composables/useDrawer";
 const { showDrawer } = useDrawer();
 const selected = ref(null);
 const editing = ref(null);
+const search = ref("");
+
+const filteredBugs = computed(() => {
+  const q = search.value.trim().toLowerCase();
+  if (!q) return bugs;
+  return bugs.filter((b) =>
+    [b.summary, b.description, b.type, b.severity, b.assignee, b.reporter]
+      .join(" ")
+      .toLowerCase()
+      .includes(q),
+  );
+});
 
 function select(b) {
   selected.value = b;
