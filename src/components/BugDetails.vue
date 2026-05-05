@@ -86,9 +86,11 @@
             <span>📎</span>
             <div class="thumb-name">{{ a.name }}</div>
           </div>
-          <button class="thumb-remove" @click.stop="removeAttachment(i)">✕</button>
+          <button class="thumb-remove" @click.stop="removeAttachment(i)">
+            ✕
+          </button>
         </div>
-        <button class="thumb-add btn" @click="fileInput.click()">+ Add</button>
+        <button class="thumb-add btn" @click="fileInput.click()">+</button>
       </div>
       <input
         ref="fileInput"
@@ -132,9 +134,8 @@ import { ref, onMounted } from "vue";
 const props = defineProps({ bug: { type: Object, required: true } });
 const emit = defineEmits(["close", "save", "delete", "add-comment"]);
 
-const platforms = ["Web", "iOS", "Android", "Desktop", "API"];
-const devices = ["Any", "Phone", "Tablet", "Laptop", "Desktop"];
-
+const platforms = ["Any", "Companion", "IHH", "ETHH"];
+const devices = ["Any", "iOS", "Android", "Chrome", "LG TV", "Sony TV"];
 const editedBug = ref({});
 const commentAuthor = ref("");
 const commentText = ref("");
@@ -142,7 +143,13 @@ const fileInput = ref(null);
 const attachments = ref([]);
 
 onMounted(() => {
-  editedBug.value = { type: "Bug", severity: "Medium", platform: "Web", device: "Any", ...props.bug };
+  editedBug.value = {
+    type: "Bug",
+    severity: "Medium",
+    platform: "Any",
+    device: "Any",
+    ...props.bug,
+  };
   attachments.value = (props.bug.attachments || []).map((a) => ({ ...a }));
 });
 
@@ -153,7 +160,11 @@ function handleFiles(e) {
       : file.type.startsWith("video/")
         ? "video"
         : "audio";
-    attachments.value.push({ name: file.name, mediaType, url: URL.createObjectURL(file) });
+    attachments.value.push({
+      name: file.name,
+      mediaType,
+      url: URL.createObjectURL(file),
+    });
   });
   e.target.value = "";
 }

@@ -49,6 +49,8 @@
 
     <div class="mt-3">
       <label class="small"><strong>Attachments</strong></label>
+      &nbsp;
+      <button class="btn" @click="fileInput.click()">+</button>
       <div class="thumbnails">
         <div
           v-for="(a, i) in attachments"
@@ -63,9 +65,10 @@
             <span>🎵</span>
             <div class="thumb-name">{{ a.name }}</div>
           </div>
-          <button class="thumb-remove" @click.stop="removeAttachment(i)">✕</button>
+          <button class="thumb-remove" @click.stop="removeAttachment(i)">
+            ✕
+          </button>
         </div>
-        <button class="thumb-add btn" @click="fileInput.click()">+ Add</button>
       </div>
       <input
         ref="fileInput"
@@ -92,13 +95,13 @@ const props = defineProps({
 const emit = defineEmits(["save", "cancel"]);
 
 const edit = !!props.modelValue;
-const platforms = ["Web", "iOS", "Android", "Desktop", "API"];
-const devices = ["Any", "Phone", "Tablet", "Laptop", "Desktop"];
+const platforms = ["Any", "Companion", "IHH", "ETHH"];
+const devices = ["Any", "iOS", "Android", "Chrome", "LG TV", "Sony TV"];
 
 const form = reactive({
   type: props.modelValue?.type || "Bug",
   severity: props.modelValue?.severity || "Medium",
-  platform: props.modelValue?.platform || "Web",
+  platform: props.modelValue?.platform || "Any",
   device: props.modelValue?.device || "Any",
   summary: props.modelValue?.summary || "",
   description: props.modelValue?.description || "",
@@ -116,7 +119,11 @@ function handleFiles(e) {
       : file.type.startsWith("video/")
         ? "video"
         : "audio";
-    attachments.value.push({ name: file.name, mediaType, url: URL.createObjectURL(file) });
+    attachments.value.push({
+      name: file.name,
+      mediaType,
+      url: URL.createObjectURL(file),
+    });
   });
   e.target.value = "";
 }
@@ -135,7 +142,14 @@ function submit() {
     alert("Summary is required");
     return;
   }
-  emit("save", { ...form, attachments: attachments.value.map(({ name, mediaType, url }) => ({ name, mediaType, url })) });
+  emit("save", {
+    ...form,
+    attachments: attachments.value.map(({ name, mediaType, url }) => ({
+      name,
+      mediaType,
+      url,
+    })),
+  });
 }
 </script>
 
