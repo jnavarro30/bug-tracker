@@ -1,25 +1,12 @@
 <template>
   <div class="card">
-    <div v-if="!isEditing">
-      <h3>{{ bug.summary }}</h3>
-      <div class="small muted">
-        Type: {{ bug.type }} • Severity: {{ bug.severity }}
-      </div>
-      <div class="mt-2">{{ bug.description || "No description" }}</div>
-
-      <div class="mt-3">
-        <strong>Assignee:</strong>
-        <span class="muted">{{ bug.assignee || "Unassigned" }}</span>
-      </div>
-      <div class="mt-2">
-        <strong>Reporter:</strong>
-        <span class="muted">{{ bug.reporter || "Unknown" }}</span>
-      </div>
-    </div>
-
-    <div v-else>
+    <div>
       <h3>
-        <input v-model="editedBug.summary" placeholder="Summary" class="input" />
+        <input
+          v-model="editedBug.summary"
+          placeholder="Summary"
+          class="input"
+        />
       </h3>
       <div class="small muted">
         <select v-model="editedBug.type" class="input">
@@ -36,16 +23,29 @@
         </select>
       </div>
       <div class="mt-2">
-        <textarea v-model="editedBug.description" placeholder="Description" class="input" rows="4" />
+        <textarea
+          v-model="editedBug.description"
+          placeholder="Description"
+          class="input"
+          rows="4"
+        />
       </div>
 
       <div class="mt-3">
         <strong>Assignee:</strong>
-        <input v-model="editedBug.assignee" placeholder="Assignee" class="input" />
+        <input
+          v-model="editedBug.assignee"
+          placeholder="Assignee"
+          class="input"
+        />
       </div>
       <div class="mt-2">
         <strong>Reporter:</strong>
-        <input v-model="editedBug.reporter" placeholder="Reporter" class="input" />
+        <input
+          v-model="editedBug.reporter"
+          placeholder="Reporter"
+          class="input"
+        />
       </div>
     </div>
 
@@ -86,7 +86,7 @@
 
     <div class="flex gap-2 mt-3">
       <button class="btn secondary" @click="$emit('close')">Close</button>
-      <button class="btn" @click="startEdit">Edit</button>
+      <button class="btn" @click="saveEdit">Save</button>
       <button class="btn" @click="$emit('delete', bug.id)">Delete</button>
     </div>
   </div>
@@ -95,43 +95,28 @@
 <script setup>
 import { ref, onMounted } from "vue";
 const props = defineProps({ bug: { type: Object, required: true } });
-const emit = defineEmits(["close", "save", "cancel", "delete", "add-comment", "add-attachment", "edit"]);
+const emit = defineEmits(["close", "save", "delete", "add-comment", "add-attachment"]);
 
-const isEditing = ref(false);
 const editedBug = ref({});
 const commentAuthor = ref("");
 const commentText = ref("");
 const attachmentName = ref("");
 
-// Initialize editedBug with the bug data when the component is mounted
 onMounted(() => {
   editedBug.value = { ...props.bug };
 });
 
-function startEdit() {
-  isEditing.value = true;
-  editedBug.value = { ...props.bug };
-}
-
 function saveEdit() {
-  if (isEditing.value) {
-    emit('save', editedBug.value);
-    isEditing.value = false;
-  }
-}
-
-function cancelEdit() {
-  isEditing.value = false;
-  editedBug.value = { ...props.bug };
+  emit("save", editedBug.value);
 }
 
 function addComment() {
   if (!commentText.value) return;
-  emit('add-comment', {
-    author: commentAuthor.value || 'Anonymous',
-    text: commentText.value
+  emit("add-comment", {
+    author: commentAuthor.value || "Anonymous",
+    text: commentText.value,
   });
-  commentText.value = '';
+  commentText.value = "";
 }
 
 function addAttachment() {
