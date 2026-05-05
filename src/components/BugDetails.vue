@@ -26,6 +26,18 @@
             <option>Critical</option>
           </select>
         </div>
+        <div class="flex flex-col gap-1">
+          <label class="small"><strong>Platform</strong></label>
+          <select v-model="editedBug.platform" class="input">
+            <option v-for="p in platforms" :key="p">{{ p }}</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="small"><strong>Device</strong></label>
+          <select v-model="editedBug.device" class="input">
+            <option v-for="d in devices" :key="d">{{ d }}</option>
+          </select>
+        </div>
       </div>
       <div class="mt-2">
         <textarea
@@ -102,13 +114,16 @@ import { ref, onMounted } from "vue";
 const props = defineProps({ bug: { type: Object, required: true } });
 const emit = defineEmits(["close", "save", "delete", "add-comment", "add-attachment"]);
 
+const platforms = ["Web", "iOS", "Android", "Desktop", "API"];
+const devices = ["Any", "Phone", "Tablet", "Laptop", "Desktop"];
+
 const editedBug = ref({});
 const commentAuthor = ref("");
 const commentText = ref("");
 const attachmentName = ref("");
 
 onMounted(() => {
-  editedBug.value = { type: "Bug", severity: "Medium", ...props.bug };
+  editedBug.value = { type: "Bug", severity: "Medium", platform: "Web", device: "Any", ...props.bug };
 });
 
 function saveEdit() {

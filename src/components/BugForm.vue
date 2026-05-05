@@ -36,7 +36,6 @@
         </select>
       </div>
     </div>
-
     <div class="mt-2">
       <input v-model="form.summary" placeholder="Summary" />
     </div>
