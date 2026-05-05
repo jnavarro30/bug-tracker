@@ -31,7 +31,7 @@
               <div class="pill">{{ bug.type }}</div>
               <div>
                 <div>
-                  <strong>{{ bug.summary }}</strong>
+                  <strong>{{ bug.title }}</strong>
                 </div>
                 <div class="small muted">Severity: {{ bug.severity }}</div>
               </div>
@@ -85,7 +85,7 @@ const filteredBugs = computed(() => {
   const q = search.value.trim().toLowerCase();
   if (!q) return bugs;
   return bugs.filter((b) =>
-    [b.summary, b.description, b.type, b.severity, b.assignee, b.reporter]
+    [b.title, b.description, b.type, b.severity, b.assignee, b.reporter]
       .join(" ")
       .toLowerCase()
       .includes(q),
@@ -161,7 +161,13 @@ function onAddAttachment(name) {
 }
 
 @keyframes fadein {
-  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 </style>

@@ -2,11 +2,7 @@
   <div class="card">
     <div>
       <h3>
-        <input
-          v-model="editedBug.summary"
-          placeholder="Summary"
-          class="input"
-        />
+        <input v-model="editedBug.title" placeholder="Title" class="input" />
       </h3>
       <div class="flex gap-2 mt-2">
         <div class="flex flex-col gap-1">
@@ -45,23 +41,6 @@
           placeholder="Description"
           class="input"
           rows="4"
-        />
-      </div>
-
-      <div class="mt-3">
-        <strong>Assignee:</strong>
-        <input
-          v-model="editedBug.assignee"
-          placeholder="Assignee"
-          class="input"
-        />
-      </div>
-      <div class="mt-2">
-        <strong>Reporter:</strong>
-        <input
-          v-model="editedBug.reporter"
-          placeholder="Reporter"
-          class="input"
         />
       </div>
     </div>

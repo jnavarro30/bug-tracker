@@ -4,7 +4,7 @@
       class="hamburger left"
       :aria-expanded="showDrawer"
       @click="showDrawer = !showDrawer"
-      title="Toggle new bug"
+      title="New Bug Form Drawer"
     >
       <img
         v-if="!showDrawer"
@@ -22,13 +22,17 @@
       />
     </button>
     <div class="header">
-      <h1>Simple Bug Tracker</h1>
+      <h1>Bug Tracker</h1>
     </div>
 
     <div>
       <div class="left-drawer" :class="{ open: showDrawer }">
         <div class="p-3">
-          <BugForm :key="showDrawer" @save="create" @cancel="showDrawer = false" />
+          <BugForm
+            :key="showDrawer"
+            @save="create"
+            @cancel="showDrawer = false"
+          />
         </div>
       </div>
 

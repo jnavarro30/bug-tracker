@@ -37,16 +37,11 @@
       </div>
     </div>
     <div class="mt-2">
-      <input v-model="form.summary" placeholder="Summary" />
+      <input v-model="form.title" placeholder="Title" />
     </div>
     <div class="mt-2">
       <textarea v-model="form.description" placeholder="Description"></textarea>
     </div>
-    <div class="flex flex-col gap-2 mt-2">
-      <input v-model="form.assignee" placeholder="Assignee" />
-      <input v-model="form.reporter" placeholder="Reporter" />
-    </div>
-
     <div class="mt-3">
       <label class="small"><strong>Attachments</strong></label>
       &nbsp;
@@ -103,7 +98,7 @@ const form = reactive({
   severity: props.modelValue?.severity || "Medium",
   platform: props.modelValue?.platform || "Any",
   device: props.modelValue?.device || "Any",
-  summary: props.modelValue?.summary || "",
+  title: props.modelValue?.title || "",
   description: props.modelValue?.description || "",
   assignee: props.modelValue?.assignee || "",
   reporter: props.modelValue?.reporter || "",
@@ -138,8 +133,8 @@ function openPreview(a) {
 }
 
 function submit() {
-  if (!form.summary.trim()) {
-    alert("Summary is required");
+  if (!form.title.trim()) {
+    alert("Title is required");
     return;
   }
   emit("save", {
