@@ -8,19 +8,24 @@
           class="input"
         />
       </h3>
-      <div class="small muted">
-        <select v-model="editedBug.type" class="input">
-          <option value="bug">Bug</option>
-          <option value="feature">Feature</option>
-          <option value="enhancement">Enhancement</option>
-        </select>
-        •
-        <select v-model="editedBug.severity" class="input">
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-          <option value="critical">Critical</option>
-        </select>
+      <div class="flex gap-2 mt-2">
+        <div class="flex flex-col gap-1">
+          <label class="small"><strong>Type</strong></label>
+          <select v-model="editedBug.type" class="input">
+            <option>Bug</option>
+            <option>Task</option>
+            <option>Improvement</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="small"><strong>Severity</strong></label>
+          <select v-model="editedBug.severity" class="input">
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+            <option>Critical</option>
+          </select>
+        </div>
       </div>
       <div class="mt-2">
         <textarea
@@ -103,7 +108,7 @@ const commentText = ref("");
 const attachmentName = ref("");
 
 onMounted(() => {
-  editedBug.value = { ...props.bug };
+  editedBug.value = { type: "Bug", severity: "Medium", ...props.bug };
 });
 
 function saveEdit() {

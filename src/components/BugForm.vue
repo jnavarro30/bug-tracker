@@ -4,17 +4,23 @@
       {{ edit ? "Edit Bug" : "New Bug" }}
     </h3>
     <div class="flex gap-2 mt-2">
-      <select v-model="form.type">
-        <option>Bug</option>
-        <option>Task</option>
-        <option>Improvement</option>
-      </select>
-      <select v-model="form.severity">
-        <option>Low</option>
-        <option>Medium</option>
-        <option>High</option>
-        <option>Critical</option>
-      </select>
+      <div class="flex flex-col gap-1">
+        <label class="small"><strong>Type</strong></label>
+        <select v-model="form.type">
+          <option>Bug</option>
+          <option>Task</option>
+          <option>Improvement</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label class="small"><strong>Severity</strong></label>
+        <select v-model="form.severity">
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Critical</option>
+        </select>
+      </div>
     </div>
     <div class="mt-2">
       <input v-model="form.summary" placeholder="Summary" />
