@@ -69,7 +69,7 @@
             ✕
           </button>
         </div>
-        <button class="thumb-add btn" @click="fileInput.click()">+</button>
+        <button class="thumb-add btn" @click="fileInput.click()" :disabled="attachments.length >= 5">+</button>
       </div>
       <input
         ref="fileInput"
@@ -134,6 +134,7 @@ onMounted(() => {
 
 function handleFiles(e) {
   Array.from(e.target.files).forEach((file) => {
+    if (attachments.value.length >= 5) return;
     const mediaType = file.type.startsWith("image/")
       ? "image"
       : file.type.startsWith("video/")

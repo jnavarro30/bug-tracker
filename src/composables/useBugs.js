@@ -30,12 +30,10 @@ export function useBugs() {
     const bug = {
       id: nextId(),
       type: payload.type || "Bug",
-      summary: payload.summary || "",
+      title: payload.title || "",
       severity: payload.severity || "Medium",
       description: payload.description || "",
       attachments: payload.attachments || [],
-      assignee: payload.assignee || null,
-      reporter: payload.reporter || null,
       comments: [],
       createdAt: new Date().toISOString(),
     };

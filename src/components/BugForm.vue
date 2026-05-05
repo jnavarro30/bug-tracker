@@ -45,7 +45,7 @@
     <div class="mt-3">
       <label class="small"><strong>Attachments</strong></label>
       &nbsp;
-      <button class="btn" @click="fileInput.click()">+</button>
+      <button class="btn" @click="fileInput.click()" :disabled="attachments.length >= 5">+</button>
       <div class="thumbnails">
         <div
           v-for="(a, i) in attachments"
@@ -109,6 +109,7 @@ const attachments = ref([]);
 
 function handleFiles(e) {
   Array.from(e.target.files).forEach((file) => {
+    if (attachments.value.length >= 5) return;
     const mediaType = file.type.startsWith("image/")
       ? "image"
       : file.type.startsWith("video/")

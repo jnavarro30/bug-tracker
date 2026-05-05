@@ -17,7 +17,20 @@
 
       <div class="bug-list-col">
         <div class="card">
-          <input v-model="search" placeholder="Search items..." />
+          <div class="filter-row">
+            <input v-model="search" placeholder="Search items..." />
+            <select v-model="filterField">
+              <option value="">All</option>
+              <option value="type">Type</option>
+              <option value="severity">Severity</option>
+              <option value="platform">Platform</option>
+              <option value="device">Device</option>
+            </select>
+            <select v-if="filterField" v-model="filterValue">
+              <option value="">Any</option>
+              <option v-for="opt in filterOptions" :key="opt">{{ opt }}</option>
+            </select>
+          </div>
           <div class="small muted mt-2">{{ filteredBugs.length }} items</div>
         </div>
         <div class="mt-3 card">
@@ -35,6 +48,9 @@
                 </div>
                 <div class="small muted">Severity: {{ bug.severity }}</div>
               </div>
+            </div>
+            <div class="small muted">
+              {{ bug.description }}
             </div>
             <div class="small muted">
               {{ new Date(bug.createdAt).toLocaleDateString() }}
@@ -66,7 +82,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import BugForm from "./BugForm.vue";
 import BugDetails from "./BugDetails.vue";
 import { useBugs } from "../composables/useBugs";
@@ -80,16 +96,35 @@ const selected = ref(null);
 const editing = ref(null);
 const search = ref("");
 const toast = ref("");
+const filterField = ref("");
+const filterValue = ref("");
+
+const FILTER_OPTIONS = {
+  type: ["Bug", "Task", "Improvement"],
+  severity: ["Low", "Medium", "High", "Critical"],
+  platform: ["Any", "Companion", "IHH", "ETHH"],
+  device: ["Any", "iOS", "Android", "Chrome", "LG TV", "Sony TV"],
+};
+
+const filterOptions = computed(() => FILTER_OPTIONS[filterField.value] ?? []);
+
+watch(filterField, () => { filterValue.value = ""; });
 
 const filteredBugs = computed(() => {
+  let list = bugs;
   const q = search.value.trim().toLowerCase();
-  if (!q) return bugs;
-  return bugs.filter((b) =>
-    [b.title, b.description, b.type, b.severity, b.assignee, b.reporter]
-      .join(" ")
-      .toLowerCase()
-      .includes(q),
-  );
+  if (q) {
+    list = list.filter((b) =>
+      [b.title, b.description, b.type, b.severity]
+        .join(" ")
+        .toLowerCase()
+        .includes(q),
+    );
+  }
+  if (filterField.value && filterValue.value) {
+    list = list.filter((b) => b[filterField.value] === filterValue.value);
+  }
+  return list;
 });
 
 function select(b) {
@@ -145,6 +180,16 @@ function onAddAttachment(name) {
 </script>
 
 <style scoped>
+.filter-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-row input {
+  flex: 1;
+}
+
 .toast {
   position: fixed;
   bottom: 24px;
