@@ -1,5 +1,6 @@
 <template>
   <div class="card" ref="cardEl">
+    <button class="modal-close" @click="$emit('close')" aria-label="Close">✕</button>
     <div>
       <h3>
         <input v-model="editedBug.title" placeholder="Title" class="input" />
@@ -224,6 +225,25 @@ async function exportAs(format) {
 </script>
 
 <style scoped>
+.modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #6b7280;
+  line-height: 1;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.modal-close:hover {
+  color: #111827;
+  background-color: #f3f4f6;
+}
+
 .thumbnails {
   display: flex;
   flex-wrap: wrap;
