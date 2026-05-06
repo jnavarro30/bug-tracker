@@ -277,6 +277,14 @@ textarea {
   transition: transform 240ms ease;
 }
 
+.main-content {
+  transition: padding-left 240ms ease;
+}
+
+.main-content.drawer-open {
+  padding-left: 320px;
+}
+
 .left-drawer.open {
   transform: translateX(0);
 }

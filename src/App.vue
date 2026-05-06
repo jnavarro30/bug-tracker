@@ -21,10 +21,6 @@
         height="20"
       />
     </button>
-    <div class="header">
-      <h1>Bug Tracker</h1>
-    </div>
-
     <div>
       <div class="left-drawer" :class="{ open: showDrawer }">
         <div class="p-3">
@@ -36,7 +32,12 @@
         </div>
       </div>
 
-      <BugList />
+      <div class="main-content" :class="{ 'drawer-open': showDrawer }">
+        <div class="header">
+          <h1>Bug Tracker</h1>
+        </div>
+        <BugList />
+      </div>
     </div>
   </div>
 </template>
