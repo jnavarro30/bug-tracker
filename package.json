@@ -6,17 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "db:start": "sudo systemctl start postgresql",
-    "db:stop": "sudo systemctl stop postgresql",
-    "db:status": "sudo systemctl status postgresql",
-    "db:setup": "sudo -u postgres node scripts/setup-db.js"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
-    "pg": "^8.20.0",
     "vue": "^3.3.0"
   },
   "devDependencies": {
