@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" ref="cardEl">
     <div>
       <h3>
         <input v-model="editedBug.title" placeholder="Title" class="input" />
@@ -69,7 +69,13 @@
             ✕
           </button>
         </div>
-        <button class="thumb-add btn" @click="fileInput.click()" :disabled="attachments.length >= 5">+</button>
+        <button
+          class="thumb-add btn"
+          @click="fileInput.click()"
+          :disabled="attachments.length >= 5"
+        >
+          +
+        </button>
       </div>
       <input
         ref="fileInput"
@@ -100,16 +106,30 @@
       </div>
     </div>
 
-    <div class="flex gap-2 mt-3">
+    <div class="flex gap-2 mt-3" data-export-ignore>
       <button class="btn secondary" @click="$emit('close')">Close</button>
       <button class="btn" @click="saveEdit">Save</button>
-      <button class="btn" @click="$emit('delete', bug.id)">Delete</button>
+      <div class="export-wrap">
+        <button class="btn" @click="exportMenuOpen = !exportMenuOpen">
+          Export ▾
+        </button>
+        <div v-if="exportMenuOpen" class="export-menu" data-export-ignore>
+          <button @click="exportAs('pdf')">PDF</button>
+          <button @click="exportAs('jpg')">JPG</button>
+          <button @click="exportAs('png')">PNG</button>
+        </div>
+      </div>
+      <button class="btn btn-delete" @click="$emit('delete', bug.id)">
+        Delete
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 const props = defineProps({ bug: { type: Object, required: true } });
 const emit = defineEmits(["close", "save", "delete", "add-comment"]);
 
@@ -120,6 +140,8 @@ const commentAuthor = ref("");
 const commentText = ref("");
 const fileInput = ref(null);
 const attachments = ref([]);
+const exportMenuOpen = ref(false);
+const cardEl = ref(null);
 
 onMounted(() => {
   editedBug.value = {
@@ -170,6 +192,34 @@ function addComment() {
     text: commentText.value,
   });
   commentText.value = "";
+}
+
+async function exportAs(format) {
+  exportMenuOpen.value = false;
+  const el = cardEl.value;
+  const canvas = await html2canvas(el, {
+    scale: 2,
+    useCORS: true,
+    ignoreElements: (el) => el.hasAttribute("data-export-ignore"),
+  });
+  const filename = `bug-${props.bug.id}`;
+
+  if (format === "pdf") {
+    const imgData = canvas.toDataURL("image/jpeg", 0.95);
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: [canvas.width / 2, canvas.height / 2],
+    });
+    pdf.addImage(imgData, "JPEG", 0, 0, canvas.width / 2, canvas.height / 2);
+    pdf.save(`${filename}.pdf`);
+  } else {
+    const mime = format === "png" ? "image/png" : "image/jpeg";
+    const link = document.createElement("a");
+    link.download = `${filename}.${format}`;
+    link.href = canvas.toDataURL(mime, 0.95);
+    link.click();
+  }
 }
 </script>
 
@@ -246,5 +296,36 @@ function addComment() {
   width: 64px;
   height: 64px;
   flex-shrink: 0;
+}
+
+.export-wrap {
+  position: relative;
+}
+
+.export-menu {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #ddd);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  min-width: 90px;
+  z-index: 10;
+}
+
+.export-menu button {
+  padding: 8px 14px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.export-menu button:hover {
+  background: var(--hover, #f5f5f5);
 }
 </style>

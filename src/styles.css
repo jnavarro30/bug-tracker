@@ -68,8 +68,16 @@ li {
   transition: background-color 200ms;
 }
 
+.btn-delete {
+  background-color: #eb2525;
+}
+
 .btn:hover {
   background-color: #1d4ed8;
+}
+
+.btn-delete:hover {
+  background-color: #d81d1d;
 }
 
 .btn.secondary {

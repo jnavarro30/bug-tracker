@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <h2>Bug Tracker</h2>
+      <h2>All Items</h2>
     </div>
 
     <div class="two-col" :class="{ editing: editing }">
@@ -108,7 +108,9 @@ const FILTER_OPTIONS = {
 
 const filterOptions = computed(() => FILTER_OPTIONS[filterField.value] ?? []);
 
-watch(filterField, () => { filterValue.value = ""; });
+watch(filterField, () => {
+  filterValue.value = "";
+});
 
 const filteredBugs = computed(() => {
   let list = bugs;
