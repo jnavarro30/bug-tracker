@@ -8,7 +8,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          "pdf-libs": ["jspdf", "html2canvas"],
+          jspdf: ["jspdf"],
+          html2canvas: ["html2canvas"],
         },
       },
     },
